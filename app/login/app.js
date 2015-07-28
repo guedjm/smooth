@@ -33,12 +33,10 @@ app.use(function(req, res, next) {
 });
 
 //Error handler
+//Error handler
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: err
-  });
+  res.send(err);
 });
 
 log('Auth server intialized');
