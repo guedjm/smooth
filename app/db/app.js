@@ -6,17 +6,17 @@ var log = require('debug')('smooth:db:log');
 var errlog = require('debug')('smooth:db:err');
 
 var express = require('mongo-express/node_modules/express')
-  , routes = require('mongo-express/routes')
+  , routes = require('./routes')
   , http = require('http');
 
 var _ = require('mongo-express/node_modules/underscore');
 var async = require('mongo-express/node_modules/async');
-var utils = require('mongo-express/utils');
+var utils = require('./utils');
 
 var mongodb = require('mongo-express/node_modules/mongodb');
 var cons = require('mongo-express/node_modules/consolidate');
 var swig = require('mongo-express/node_modules/swig');
-var swigFilters = require('mongo-express/filters');
+var swigFilters = require('./filters');
 var app = express();
 
 var config = require('./config');
@@ -33,12 +33,12 @@ app.configure(function(){
   if(config.useBasicAuth){
     app.use(express.basicAuth(config.basicAuth.username, config.basicAuth.password));
   }
-  app.set('views', 'node_modules/mongo-express' + '/views');
+  app.set('views', 'app/db' + '/views');
   app.set('view engine', 'html');
   app.set('view options', {layout: false});
   app.use(express.favicon());
   app.use(express.logger('dev'));
-  app.use(config.site.baseUrl,express.static('node_modules/mongo-express' + '/public'));
+  app.use(config.site.baseUrl,express.static('app/db' + '/public'));
   app.use(express.bodyParser());
   app.use(express.cookieParser(config.site.cookieSecret));
   app.use(express.session({
