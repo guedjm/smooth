@@ -17,5 +17,10 @@
     "chai": "^3.2.0",
     "mocha": "^2.2.5",
     "request": "^2.60.0"
+  },
+  "scripts": {
+    "start": "node ./bin/server.js",
+    "start-dev": "DEBUG=smooth:* nodemon ./bin/server.js",
+    "test": "./node_modules/.bin/mocha ./test"
   }
 }

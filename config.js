@@ -6,7 +6,7 @@ module.exports = {
   "db" : {
     "server" : "localhost",
     "port" : "27017",
-    "database" : "test"
+    "database" : "smooth"
   },
 
   "http": {
