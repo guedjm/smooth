@@ -11,6 +11,7 @@
     "mongo-express": "^0.21.0",
     "mongoose": "^4.1.0",
     "morgan": "^1.6.1",
+    "sha1": "^1.1.1",
     "vhost": "^3.0.1"
   },
   "devDependencies": {

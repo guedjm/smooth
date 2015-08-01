@@ -1,14 +1,35 @@
 var mongoose = require('mongoose');
+var sha1 = require('sha1');
 
 var clientSchema = new mongoose.Schema({
-  client_id: String,
-  client_type: String,
-  application_name: String,
-  client_secret: String,
-  redirect_uris: [],
-  grant_types: [],
-  javascript_origins: []
+  developerId: String,
+  clientId: String,
+  clientType: String,
+  applicationName: String,
+  clientSecret: String,
+  redirectUris: [],
+  grantTypes: [],
+  javascriptOrigins: [],
+  creationDate: Date,
+  activated: Boolean
 });
+
+
+clientSchema.statics.createNewClient = function(developerId, clientType, applicationName, redirectUris, grantTypes, javascriptOrigins, func) {
+  var now = new Date();
+  clientModel.create({
+    developerId: developerId,
+    clientId: sha1(developerId + applicationName + now.getTime()),
+    clientType: clientType,
+    applicationName: applicationName,
+    clientSecret: sha1(developerId + now.toTimeString() + developerId),
+    redirectUris: redirectUris,
+    grantTypes: grantTypes,
+    javascriptOrigins: javascriptOrigins,
+    creationDate: now,
+    activated: false
+  }, func);
+};
 
 var clientModel = mongoose.model('Client', clientSchema);
 

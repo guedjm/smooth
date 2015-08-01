@@ -10,7 +10,6 @@ var app = express();
  * Routes
  */
 var index = require('./routes/index');
-var client = require('./routes/client');
 
 
 app.use(logger('dev'));
@@ -23,7 +22,6 @@ app.use(cookieParser());
  * Defining routes
  */
 app.use('/', index);
-app.use('/client', client);
 
 
 
