@@ -14,7 +14,8 @@ module.exports = {
   },
 
   "login_srv" : {
-    "url" : "login.smooth.local"
+    "url" : "login.smooth.local",
+    "access_code_duration": 10
   },
 
   "api_srv": {
