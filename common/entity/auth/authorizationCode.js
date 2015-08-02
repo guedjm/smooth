@@ -2,7 +2,7 @@ var config = require('../../../config.js');
 var mongoose = require('mongoose');
 var sha1 = require('sha1');
 
-var codeSchemas = new mongoose.Schema({
+var authorizationCodeSchemas = new mongoose.Schema({
   requestId: String,
   clientId: String,
   userId: String,
@@ -10,10 +10,11 @@ var codeSchemas = new mongoose.Schema({
   scope: [],
   deliveryDate: Date,
   expirationDate: Date,
-  used: Boolean
+  used: Boolean,
+  useDate: Date
 });
 
-codeSchemas.statics.createCodeFromRequest = function (codeRequest, userId, cb) {
+authorizationCodeSchemas.statics.createCodeFromRequest = function (codeRequest, userId, cb) {
   var now = new Date();
   codeModel.create({
     requestId: codeRequest._id,
@@ -27,6 +28,6 @@ codeSchemas.statics.createCodeFromRequest = function (codeRequest, userId, cb) {
   }, cb);
 };
 
-var codeModel = mongoose.model('Code', codeSchemas);
+var codeModel = mongoose.model('Code', authorizationCodeSchemas);
 
 module.exports = codeModel;
