@@ -2,25 +2,82 @@ var mongoose = require('mongoose');
 
 var accessTokenRequestSchema = new mongoose.Schema({
   grantType: String,
-  code: String, // For Authorization Code Grant
+  authorizationCode: String, // For Authorization Code Grant
   username: String, // For Resource Owner Password Credentials Grant
   password: String, // For Resource Owner Password Credentials Grant
   scope: String, // For Resource Owner Password Credentials Grant
   refreshToken: String, // For Refresh Token Grant
-  redirect_uri: String,
-  clientId: String,
+  redirectUri: String,
+  clientId: {Type: mongoose.Schema.Type.ObjectId, ref: 'Client'},
+  clientSecret: String,
   origin: String,
   date: Date
 });
 
-accessTokenRequestSchema.statics.createTokenRequest = function (clientId, origin, scope, redirect_uri, state, cb) {
+accessTokenRequestSchema.statics.createCodeGrant = function(authorizationCode, redirectUri, clientId, clientSecret, origin, cb) {
   var now = new Date();
   accessTokenRequestModel.create({
+    grantType: 'authorization_code',
+    authorizationCode: authorizationCode,
+    username: null,
+    password: null,
+    scope: null,
+    refreshToken: null,
+    redirectUri: redirectUri,
     clientId: clientId,
+    clientSecret: clientSecret,
     origin: origin,
+    date: now
+  }, cb);
+};
+
+accessTokenRequestSchema.statics.createPasswordGrant = function(username, password, scope, clientSecret, origin, cb) {
+  var now = new Date();
+  accessTokenRequestModel.create({
+    grantType: 'password',
+    authorizationCode: null,
+    username: username,
+    password: password,
     scope: scope,
-    redirect_uri: redirect_uri,
-    state: state,
+    refreshToken: null,
+    redirectUri: null,
+    clientId: null,
+    clientSecret: clientSecret,
+    origin: origin,
+    date: now
+  }, cb);
+};
+
+accessTokenRequestSchema.statics.createClientCredentialGrant = function(scope, clientSecret, origin, cb) {
+  var now = new Date();
+  accessTokenRequestModel.create({
+    grantType: 'client_credential',
+    authorizationCode: null,
+    username: null,
+    password: null,
+    scope: null,
+    refreshToken: null,
+    redirectUri: null,
+    clientId: null,
+    clientSecret: clientSecret,
+    origin: origin,
+    date: now
+  }, cb);
+};
+
+accessTokenRequestSchema.statics.createRefreshTokenGrant = function(refreshToken, scope, clientSecret, origin, cb) {
+  var now = new Date();
+  accessTokenRequestModel.create({
+    grantType: 'refreshToken',
+    authorizationCode: null,
+    username: null,
+    password: null,
+    scope: null,
+    refreshToken: refreshToken,
+    redirectUri: null,
+    clientId: null,
+    clientSecret: clientSecret,
+    origin: origin,
     date: now
   }, cb);
 };

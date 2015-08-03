@@ -2,14 +2,14 @@ var mongoose = require('mongoose');
 var sha1 = require('sha1');
 
 var clientSchema = new mongoose.Schema({
-  developerId: String,
+  developerId: {type: monngoose.Schema.Types.ObjectId},
   clientId: String,
   clientType: String,
   applicationName: String,
   clientSecret: String,
-  redirectUris: [],
-  grantTypes: [],
-  javascriptOrigins: [],
+  redirectUris: [String],
+  grantTypes: [String],
+  javascriptOrigins: [String],
   creationDate: Date,
   activated: Boolean
 });

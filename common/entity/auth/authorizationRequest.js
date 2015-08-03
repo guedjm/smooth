@@ -1,23 +1,24 @@
 var mongoose = require('mongoose');
 
 var authorizationRequestSchema = new mongoose.Schema({
-  response_type: String,
-  clientId: String,
-  redirect_uri: String,
-  scope: [],
+  responseType: String,
+  clientId: {Type: mongoose.Schema.Type.ObjectId, ref: 'Client'},
+  redirectUri: String,
+  scope: [String],
   state: String,
   origin: String,
   date: Date
 });
 
-authorizationRequestSchema.statics.createAuthorizationRequest = function (clientId, origin, scope, redirect_uri, state, cb) {
+authorizationRequestSchema.statics.createAuthorizationRequest = function (responseType, clientId, redirectUri, scope, state, origin, cb) {
   var now = new Date();
   authorizationRequestModel.create({
+    responseType: responseType,
     clientId: clientId,
-    origin: origin,
+    redirectUri: redirectUri,
     scope: scope,
-    redirect_uri: redirect_uri,
     state: state,
+    origin: origin,
     date: now
   }, cb);
 };

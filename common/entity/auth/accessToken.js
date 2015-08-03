@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var accessTokenSchema = new mongoose.Schema({
-  requestId: String,
-  accessId: String,
+  requestId: {Type: mongoose.Schema.Type.ObjectId, ref: 'AccessTokenRequest'},
+  accessId: {Type: mongoose.Schema.Type.ObjectId, ref: 'Access'},
   grantType: String,
   token: String,
   usable: Boolean,
@@ -10,3 +10,6 @@ var accessTokenSchema = new mongoose.Schema({
   expirationDate: Date
 });
 
+var accessTokenModel = new mongoose.model('AccessToken', accessTokenSchema);
+
+module.exports = accessTokenModel;
