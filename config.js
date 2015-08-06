@@ -15,6 +15,7 @@ module.exports = {
 
   "login_srv" : {
     "url" : "login.smooth.local",
+    "session_secret": "fezfezgzekrgeger",
     "access_code_duration": 10
   },
 

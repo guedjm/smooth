@@ -1,8 +1,10 @@
 var log = require('debug')('smooth:login:log');
+var config = require('../../config');
 var express = require('express');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var app = express();
 
@@ -16,6 +18,7 @@ app.set('views', './app/login/views');
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
+app.use(session({secret: config.login_srv.session_secret, resave: true, saveUninitialized: false}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());

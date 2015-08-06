@@ -29,6 +29,12 @@ userSchema.statics.createNewUser = function(email, password, name, firstName, se
   }, cb);
 };
 
+userSchema.statics.getUserId = function(email, password, cb) {
+  var cryptedPassword = sha1(password + email);
+  console.log(cryptedPassword);
+  userModel.findOne({password: cryptedPassword}, '_id', cb)
+};
+
 var userModel = mongoose.model('User', userSchema);
 
 module.exports = userModel;
