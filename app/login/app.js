@@ -10,7 +10,10 @@ var app = express();
  * Routes
  */
 var index = require('./routes/index');
+var login = require('./routes/login');
 
+app.set('views', './app/login/views');
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -22,6 +25,7 @@ app.use(cookieParser());
  * Defining routes
  */
 app.use('/', index);
+app.use('/login', login);
 
 
 

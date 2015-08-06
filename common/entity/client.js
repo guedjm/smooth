@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var sha1 = require('sha1');
 
 var clientSchema = new mongoose.Schema({
-  developerId: {type: monngoose.Schema.Types.ObjectId},
+  developerId: {type: mongoose.Schema.Types.ObjectId},
   clientId: String,
   clientType: String,
   applicationName: String,
