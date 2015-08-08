@@ -1,27 +1,28 @@
 var express = require('express');
 var userModel = require('../../../common/entity/user');
 var router = express.Router();
+var querystring = require("querystring");
 
 /* GET home page. */
-router.get('/:param', function(req, res, next) {
+router.get('', function(req, res, next) {
   var session = req.session;
 
   //If user is already logged, redirect to authorize
   if (session.userId !=  undefined)
   {
-    res.redirect(301, '/authorize/' + req.params.param);
+    res.redirect('/authorize?' + querystring.stringify(req.query));
     res.end();
   }
   res.render('login', { title: 'smooth' });
 });
 
-router.post('/:param', function(req, res, next) {
+router.post('', function(req, res, next) {
   var session = req.session;
 
   //If user is already logged, redirect to authorize
   if (session.userId !=  undefined)
   {
-    res.redirect(301, '/authorize/' + req.params.param);
+    res.redirect('/authorize?' + querystring.stringify(req.query));
   }
   else if (req.body.email == undefined || req.body.password == undefined)
   {
@@ -34,7 +35,7 @@ router.post('/:param', function(req, res, next) {
     }
     else if (user != null) {
       req.session.userId = user._id;
-      res.redirect(301, '/authorize/' + encodeURIComponent(req.params.param));
+      res.redirect(301, '/authorize?' + querystring.stringify(req.query));
     }
     else {
       res.send(req.body);

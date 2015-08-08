@@ -3,17 +3,15 @@ var router = express.Router();
 var uriUtils = require('../../../common/utils/uri');
 var authorizeHandler = require('../auth/authorize');
 
-router.get('/:param', function(req, res, next) {
-  var paramObj = uriUtils.parseUri(req.params.param);
-
-  if (paramObj.response_type == undefined)
+router.get('', function(req, res, next) {
+  if (req.query.response_type == undefined)
   {
     return next()
   }
 
-  switch (paramObj.response_type) {
+  switch (req.query.response_type) {
     case 'code':
-      return authorizeHandler.handleAuthorizationCodeGrant(req, res, next, paramObj, req.params.param);
+      return authorizeHandler.handleAuthorizationCodeGrant(req, res, next);
       break;
 
     default:
@@ -21,16 +19,15 @@ router.get('/:param', function(req, res, next) {
   }
 });
 
-router.post('/:param', function (req, res, next) {
-  var paramObj = uriUtils.parseUri(req.params.param);
+router.post('', function (req, res, next) {
 
-  if (paramObj.response_type == undefined) {
+  if (req.query.response_type == undefined) {
     return next()
   }
 
-  switch (paramObj.response_type) {
+  switch (req.query.response_type) {
     case 'code':
-      return authorizeHandler.handleAuthorizationCodeGrantConfirm(req, res, next, paramObj, req.params.param);
+      return authorizeHandler.handleAuthorizationCodeGrantConfirm(req, res, next);
       break;
 
     default:
