@@ -31,7 +31,6 @@ userSchema.statics.createNewUser = function(email, password, name, firstName, se
 
 userSchema.statics.getUserId = function(email, password, cb) {
   var cryptedPassword = sha1(password + email);
-  console.log(cryptedPassword);
   userModel.findOne({password: cryptedPassword}, '_id', cb)
 };
 

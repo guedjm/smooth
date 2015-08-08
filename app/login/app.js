@@ -13,6 +13,7 @@ var app = express();
  */
 var index = require('./routes/index');
 var login = require('./routes/login');
+var authorize = require('./routes/authorize');
 
 app.set('views', './app/login/views');
 app.set('view engine', 'jade');
@@ -29,7 +30,7 @@ app.use(cookieParser());
  */
 app.use('/', index);
 app.use('/login', login);
-
+app.use('/authorize', authorize);
 
 
 // 404 error

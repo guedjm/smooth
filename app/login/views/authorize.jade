@@ -1,0 +1,11 @@
+doctype html
+html
+   head
+      title= "Authorization"
+   body
+      h1 #{client_name} want access your account
+      p Scope is :
+         b #{scope}
+      form(action="" method="POST")
+         input(type="hidden" name="request_id" value="#{request_id}")
+         input(type="submit" value="Ok")

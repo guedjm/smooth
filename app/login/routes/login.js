@@ -3,25 +3,25 @@ var userModel = require('../../../common/entity/user');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/:param', function(req, res, next) {
   var session = req.session;
 
   //If user is already logged, redirect to authorize
   if (session.userId !=  undefined)
   {
-    res.redirect(301, '/authorize');
+    res.redirect(301, '/authorize/' + req.params.param);
     res.end();
   }
   res.render('login', { title: 'smooth' });
 });
 
-router.post('/', function(req, res, next) {
+router.post('/:param', function(req, res, next) {
   var session = req.session;
 
   //If user is already logged, redirect to authorize
   if (session.userId !=  undefined)
   {
-    res.redirect(301, '/authorize');
+    res.redirect(301, '/authorize/' + req.params.param);
   }
   else if (req.body.email == undefined || req.body.password == undefined)
   {
@@ -33,9 +33,8 @@ router.post('/', function(req, res, next) {
       next(err);
     }
     else if (user != null) {
-      console.log(user);
       req.session.userId = user._id;
-      res.redirect(301, '/authorize');
+      res.redirect(301, '/authorize/' + encodeURIComponent(req.params.param));
     }
     else {
       res.send(req.body);
