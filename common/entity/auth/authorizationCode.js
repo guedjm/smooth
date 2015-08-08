@@ -3,9 +3,9 @@ var mongoose = require('mongoose');
 var sha1 = require('sha1');
 
 var authorizationCodeSchemas = new mongoose.Schema({
-  requestId: {Type: mongoose.Schema.ObjectId},
-  clientId: {Type: mongoose.Schema.ObjectId},
-  userId: {Type: mongoose.Schema.ObjectId},
+  requestId: {type: mongoose.Schema.Types.ObjectId, ref: 'AuthorizationRequest'},
+  clientId: {type: mongoose.Schema.Types.ObjectId, ref: 'Client'},
+  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   code: String,
   scope: String,
   deliveryDate: Date,
@@ -16,14 +16,16 @@ var authorizationCodeSchemas = new mongoose.Schema({
 
 authorizationCodeSchemas.statics.createCodeFromRequest = function (authorizationRequest, userId, clientId, cb) {
   var now = new Date();
+  var expirationDate = new Date();
+  expirationDate.setMinutes(now.getMinutes() + config.login_srv.access_code_duration);
   authorizationCodeModel.create({
     requestId: authorizationRequest._id,
     clientId: clientId,
     userId: userId,
-    code: sha1(now.toDateString() + authorizationRequest.clientId + userId + userId),
+    code: sha1(now.toString() + authorizationRequest.clientId + userId + userId),
     scope: authorizationRequest.scope,
     deliveryDate: now,
-    expirationDate: new Date(now.getMinutes() + config.login_srv.access_code_duration),
+    expirationDate: expirationDate,
     used: false,
     useDate: null
   }, cb);

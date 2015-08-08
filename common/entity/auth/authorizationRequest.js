@@ -7,7 +7,7 @@ var authorizationRequestSchema = new mongoose.Schema({
   scope: String,
   state: String,
   origin: String,
-  userId: mongoose.Schema.ObjectId,
+  userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   date: Date
 });
 
