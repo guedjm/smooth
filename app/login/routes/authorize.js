@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var uriUtils = require('../../../common/utils/uri');
 var authorizeHandler = require('../auth/authorize');
 
 router.get('', function(req, res, next) {
