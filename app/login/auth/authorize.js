@@ -14,7 +14,7 @@ function handleAuthorizationCodeGrant(req, res, next, param, paramStr) {
   //Log the request
   var userId = (req.session == undefined) ? null : req.session.userId;
   authorizeRequestModel.createAuthorizationRequest(param.response_type, param.client_id,
-    param.redirect_uri, param.scope, param.state, userId, req.get('host'), function (err, request) {
+    param.redirect_uri, param.scope, param.state, userId, req.ip, function (err, request) {
       if (err) {
         return next();
       }
