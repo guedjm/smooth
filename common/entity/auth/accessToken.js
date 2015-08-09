@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var sha1 = require('sha1');
 
 var accessTokenSchema = new mongoose.Schema({
-  requestId: {Type: mongoose.Schema.Type.ObjectId, ref: 'AccessTokenRequest'},
-  accessId: {Type: mongoose.Schema.Type.ObjectId, ref: 'Access'},
+  requestId: {type: mongoose.Schema.Types.ObjectId, ref: 'AccessTokenRequest'},
+  accessId: {type: mongoose.Schema.Types.ObjectId, ref: 'Access'},
   grantType: String,
   token: String,
   usable: Boolean,
@@ -10,6 +11,21 @@ var accessTokenSchema = new mongoose.Schema({
   expirationDate: Date
 });
 
-var accessTokenModel = new mongoose.model('AccessToken', accessTokenSchema);
+accessTokenSchema.statics.createFromCode = function (requestId, accessId, cb) {
+  var now = new Date();
+  var expirationDate = new Date();
+  expirationDate.setDate(now.getDate() + 1);
+  accessTokenModel.create({
+    requestId: requestId,
+    accessId: accessId,
+    grantType: 'Code',
+    token : sha1(requestId + now.toString() + requestId),
+    usable: true,
+    deliveryDate: now,
+    expirationDate: expirationDate
+  }, cb);
+};
+
+var accessTokenModel = mongoose.model('AccessToken', accessTokenSchema);
 
 module.exports = accessTokenModel;

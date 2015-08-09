@@ -8,7 +8,7 @@ var accessTokenRequestSchema = new mongoose.Schema({
   scope: String, // For Resource Owner Password Credentials Grant
   refreshToken: String, // For Refresh Token Grant
   redirectUri: String,
-  clientId: {Type: mongoose.Schema.Type.ObjectId, ref: 'Client'},
+  clientId: String,
   clientSecret: String,
   origin: String,
   date: Date

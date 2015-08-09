@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
+var sha1 = require('sha1');
 
 var refreshTokenSchema = new mongoose.Schema({
-  requestId: {Type: mongoose.Schema.Type.ObjectId, ref: 'AccessTokenRequest'},
-  accessId: {Type: mongoose.Schema.Type.ObjectId, ref: 'Access'},
+  requestId: {type: mongoose.Schema.Types.ObjectId, ref: 'AccessTokenRequest'},
+  accessId: {type: mongoose.Schema.Types.ObjectId, ref: 'Access'},
   token: String,
   used: Boolean,
   usable: Boolean,
@@ -10,6 +11,21 @@ var refreshTokenSchema = new mongoose.Schema({
   expirationDate: Date
 });
 
-var refreshTokenModel = new mongoose.model('RefreshToken', refreshTokenSchema);
+refreshTokenSchema.statics.createNewRefreshToken = function (requestId, accessId, cb) {
+  var now = new Date();
+  var expirationDate = new Date();
+  expirationDate.setMonth(now.getMonth() + 1);
+  refreshTokenModel.create({
+    requestId: requestId,
+    accessId: accessId,
+    token: sha1(accessId + now.toString() + accessId),
+    used: false,
+    usable: true,
+    deliveryDate: now,
+    expirationDate: expirationDate
+  }, cb);
+};
+
+var refreshTokenModel = mongoose.model('RefreshToken', refreshTokenSchema);
 
 module.exports = refreshTokenModel;

@@ -31,6 +31,13 @@ authorizationCodeSchemas.statics.createCodeFromRequest = function (authorization
   }, cb);
 };
 
+authorizationCodeSchemas.methods.useCode = function (cb) {
+  this.used = true;
+  this.useDate = new Date();
+  this.save(cb);
+};
+
+
 var authorizationCodeModel = mongoose.model('AuthorizationCode', authorizationCodeSchemas);
 
 module.exports = authorizationCodeModel;
