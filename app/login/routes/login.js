@@ -11,7 +11,6 @@ router.get('', function(req, res, next) {
   if (session.userId !=  undefined)
   {
     res.redirect('/authorize?' + querystring.stringify(req.query));
-    res.end();
   }
   res.render('login', { title: 'smooth' });
 });
@@ -35,7 +34,7 @@ router.post('', function(req, res, next) {
     }
     else if (user != null) {
       req.session.userId = user._id;
-      res.redirect(301, '/authorize?' + querystring.stringify(req.query));
+      res.redirect('/authorize?' + querystring.stringify(req.query));
     }
     else {
       res.send(req.body);

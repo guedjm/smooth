@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 
 var authorizationErrorSchema = new mongoose.Schema({
-  requestId: {Type: mongoose.Schema.Type.ObjectId, ref: 'AuthorizationRequest'},
-  userId: {Type: mongoose.Schema.Type.ObjectId},
+  requestId: {type: mongoose.Schema.Types.ObjectId, ref: 'AuthorizationRequest'},
+  userId: {type: mongoose.Schema.Types.ObjectId},
   error: String
 });
 

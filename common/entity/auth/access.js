@@ -69,6 +69,10 @@ accessSchema.statics.createNewAccessFromCodeGrant = function (requestId, code, c
   });
 };
 
+accessSchema.renewTokens = function () {
+
+};
+
 var accessModel = mongoose.model('Access', accessSchema);
 
 module.exports = accessModel;
