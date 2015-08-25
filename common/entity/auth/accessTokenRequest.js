@@ -82,6 +82,25 @@ accessTokenRequestSchema.statics.createRefreshTokenGrant = function(refreshToken
   }, cb);
 };
 
+accessTokenRequestSchema.statics.createRequest = function (grantType, authorizationCode, username, password, scope,
+  refreshToken, redirectUri, clientId, clientSecret, origin, cb) {
+
+  var now = new Date();
+  accessTokenRequestModel.create({
+    grantType: grantType,
+    authorizationCode: authorizationCode,
+    username: username,
+    password: password,
+    scope: scope,
+    refreshToken: refreshToken,
+    redirectUri: redirectUri,
+    clientId: clientId,
+    clientSecret: clientSecret,
+    origin: origin,
+    date: now
+  }, cb);
+};
+
 var accessTokenRequestModel = mongoose.model('AccessTokenRequest', accessTokenRequestSchema);
 
 module.exports = accessTokenRequestModel;

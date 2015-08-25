@@ -19,6 +19,7 @@ var authorize = require('./routes/authorize');
 var authorizeMiddleware = require('./middleware/authorize');
 
 var token = require('./routes/token');
+var tokenMiddleware = require('./middleware/token');
 
 app.set('views', './app/login/views');
 app.set('view engine', 'jade');
@@ -37,6 +38,7 @@ app.use('/', index);
 app.use('/login', login);
 app.use('/authorize', authorizeMiddleware);
 app.use('/authorize', authorize);
+app.use('/token', tokenMiddleware);
 app.use('/token', token);
 
 // 404 error

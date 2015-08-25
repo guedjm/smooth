@@ -26,6 +26,13 @@ accessTokenSchema.statics.createFromCode = function (requestId, accessId, cb) {
   }, cb);
 };
 
+accessTokenSchema.condemn = function (cb) {
+  this.usable = false;
+  this.save(function (err) {
+    cb(err);
+  });
+};
+
 var accessTokenModel = mongoose.model('AccessToken', accessTokenSchema);
 
 module.exports = accessTokenModel;

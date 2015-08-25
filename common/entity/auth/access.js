@@ -69,9 +69,54 @@ accessSchema.statics.createNewAccessFromCodeGrant = function (requestId, code, c
   });
 };
 
-accessSchema.renewTokens = function () {
-
-};
+accessSchema.renewTokens = function (requestId, cb) {
+  accessTokenModel.findOne({_id: this.currentAccessTokenId}, function (err, oldAccessToken) {
+    if (err || oldAccessToken == undefined) {
+      cb(err, null, null);
+    }
+    else {
+      oldAccessToken.condemn(function (err) {
+        if (err) {
+          cb(err, null, null);
+        }
+        else {
+          accessTokenModel.createFromCode(requestId, oldAccessToken.accessId, function (err, accessToken) {
+            if (err || accessToken == undefined) {
+              cb(err, null, null);
+            }
+            else {
+              refreshTokenModel.findOne({_id: this.currentRefreshTokenId}, function (err, oldRefreshToken) {
+                if (err || oldRefreshToken == undefined) {
+                  cb(err, null, null);
+                }
+                else {
+                  refreshTokenModel.createNewRefreshToken(requestId, oldRefreshToken.accessId, function (err, refreshToken) {
+                    if (err || refreshToken == undefined) {
+                      cb(err, null, null);
+                    }
+                    else {
+                      this.currentAccessTokenId = accessToken._id;
+                      this.currentRefreshTokenId = refreshToken._id;
+                      this.save(function (err) {
+                        if (err) {
+                          cb(err, null, null);
+                        }
+                        else {
+                          cb(null, accessToken, refreshToken);
+                        }
+                      });
+                    }
+                  });
+                }
+              })
+            }
+          });
+        }
+      })
+    }
+  });
+}
+;
 
 var accessModel = mongoose.model('Access', accessSchema);
 
