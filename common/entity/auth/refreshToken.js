@@ -26,6 +26,13 @@ refreshTokenSchema.statics.createNewRefreshToken = function (requestId, accessId
   }, cb);
 };
 
+refreshTokenSchema.methods.condemn = function (cb) {
+  this.usable = false;
+  this.save(function (err) {
+    cb(err);
+  });
+};
+
 var refreshTokenModel = mongoose.model('RefreshToken', refreshTokenSchema);
 
 module.exports = refreshTokenModel;

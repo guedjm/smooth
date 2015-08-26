@@ -26,7 +26,7 @@ accessTokenSchema.statics.createFromCode = function (requestId, accessId, cb) {
   }, cb);
 };
 
-accessTokenSchema.condemn = function (cb) {
+accessTokenSchema.methods.condemn = function (cb) {
   this.usable = false;
   this.save(function (err) {
     cb(err);

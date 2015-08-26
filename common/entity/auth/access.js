@@ -69,7 +69,8 @@ accessSchema.statics.createNewAccessFromCodeGrant = function (requestId, code, c
   });
 };
 
-accessSchema.renewTokens = function (requestId, cb) {
+accessSchema.methods.renewTokens = function (requestId, cb) {
+  var access = this;
   accessTokenModel.findOne({_id: this.currentAccessTokenId}, function (err, oldAccessToken) {
     if (err || oldAccessToken == undefined) {
       cb(err, null, null);
@@ -80,29 +81,40 @@ accessSchema.renewTokens = function (requestId, cb) {
           cb(err, null, null);
         }
         else {
+          console.log('oldToken condemn');
           accessTokenModel.createFromCode(requestId, oldAccessToken.accessId, function (err, accessToken) {
             if (err || accessToken == undefined) {
               cb(err, null, null);
             }
             else {
-              refreshTokenModel.findOne({_id: this.currentRefreshTokenId}, function (err, oldRefreshToken) {
+              console.log('new token created');
+              refreshTokenModel.findOne({_id: access.currentRefreshTokenId}, function (err, oldRefreshToken) {
                 if (err || oldRefreshToken == undefined) {
                   cb(err, null, null);
                 }
                 else {
-                  refreshTokenModel.createNewRefreshToken(requestId, oldRefreshToken.accessId, function (err, refreshToken) {
-                    if (err || refreshToken == undefined) {
+                  oldRefreshToken.condemn(function (err){
+                    if (err) {
                       cb(err, null, null);
+                      console.log('refreshToken condemn');
                     }
                     else {
-                      this.currentAccessTokenId = accessToken._id;
-                      this.currentRefreshTokenId = refreshToken._id;
-                      this.save(function (err) {
-                        if (err) {
+                      refreshTokenModel.createNewRefreshToken(requestId, oldRefreshToken.accessId, function (err, refreshToken) {
+                        if (err || refreshToken == undefined) {
                           cb(err, null, null);
                         }
                         else {
-                          cb(null, accessToken, refreshToken);
+                          console.log('new refreshToken created');
+                          access.currentAccessTokenId = accessToken._id;
+                          access.currentRefreshTokenId = refreshToken._id;
+                          access.save(function (err) {
+                            if (err) {
+                              cb(err, null, null);
+                            }
+                            else {
+                              cb(null, accessToken, refreshToken);
+                            }
+                          });
                         }
                       });
                     }
@@ -115,8 +127,7 @@ accessSchema.renewTokens = function (requestId, cb) {
       })
     }
   });
-}
-;
+};
 
 var accessModel = mongoose.model('Access', accessSchema);
 

@@ -24,14 +24,14 @@ function handleAccessTokenRequest(req, res, next) {
         //Get client
         clientModel.findOne({clientId: req.query.client_id, clientSecret: clientSecret}, function (err, client) {
           if (err || client == undefined || client.redirectUris.indexOf(req.query.redirect_uri) == -1) {
-            console.log('lol');
-            next();
+
           }
           else {
             req.smoothClient = client;
           }
+          next();
         });
-      };
+      }
     });
 }
 
