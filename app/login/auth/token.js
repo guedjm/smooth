@@ -43,13 +43,18 @@ function handleTokenRequestByCode(req, res, next) {
                 }
                 else {
                   access.renewTokens(req.smoothRequest._id, function (err, accessToken, refreshToken) {
-                    var response = {
-                      access_token: accessToken.token,
-                      token_type: "bearer",
-                      expire_in: "3600",
-                      refresh_token: refreshToken.token
-                    };
-                    res.send(response);
+                    if (err) {
+                      handleTokenError(req, res, 'server_error');
+                    }
+                    else {
+                      var response = {
+                        access_token: accessToken.token,
+                        token_type: "bearer",
+                        expire_in: "3600",
+                        refresh_token: refreshToken.token
+                      };
+                      res.send(response);
+                    }
                   });
                 }
               });
