@@ -17,6 +17,7 @@ var authMiddleware = require('./middleware/auth');
  */
 var index = require('./routes/index');
 var client = require('./routes/client');
+var user = require('./routes/user');
 
 
 app.use(logger('dev'));
@@ -24,13 +25,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+/**
+ * Auth middleware
+ */
+app.use('/', authMiddleware);
 
 /**
  * Defining routes
  */
-app.use('/', authMiddleware);
 app.use('/', index);
 app.use('/client', client);
+app.use('/user', user);
 
 
 

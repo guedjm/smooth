@@ -9,6 +9,7 @@ router.get('/', function(req, res, next) {
     access: req.smoothClientAccess,
     msg: 'Hello API !'
   };
+  console.log('hello');
   res.send(result);
 });
 
