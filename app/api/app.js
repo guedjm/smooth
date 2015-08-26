@@ -4,7 +4,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
 var app = express();
+
+/**
+ * Middleware
+ */
+var authMiddleware = require('./middleware/auth');
 
 /**
  * Routes
@@ -22,6 +28,7 @@ app.use(cookieParser());
 /**
  * Defining routes
  */
+app.use('/', authMiddleware);
 app.use('/', index);
 app.use('/client', client);
 

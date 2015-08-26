@@ -3,7 +3,13 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send('Hello API server !');
+  var result = {
+    client: req.smoothClient,
+    user : req.smoothUser,
+    access: req.smoothClientAccess,
+    msg: 'Hello API !'
+  };
+  res.send(result);
 });
 
 
